@@ -67,7 +67,7 @@ export function ArchitectureCanvas({
         // Find all children of this group node
         const children = graph.nodes.filter(n => n.parentNode === node.id);
         const maxY = children.length > 0
-          ? Math.max(...children.map(c => c.position.y))
+          ? Math.max(...children.map(c => c.position?.y ?? 0))
           : 0;
         // Estimate node height based on max child Y position + padding
         const estimatedHeight = maxY + 80;

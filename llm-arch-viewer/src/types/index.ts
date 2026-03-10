@@ -23,7 +23,7 @@ export interface ModelConfig {
 // React Flow Node Types
 export interface ArchNode {
   id: string;
-  type: 'input' | 'embedding' | 'decoder' | 'attention' | 'mlp' | 'moe' | 'moe-expert' | 'router' | 'lmhead' | 'norm' | 'group';
+  type: 'input' | 'embedding' | 'decoder' | 'attention' | 'mlp' | 'moe' | 'moe-expert' | 'router' | 'lmhead' | 'norm' | 'group' | 'output';
   label: string;
   position?: { x: number; y: number };
   data?: {

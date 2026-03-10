@@ -23,14 +23,6 @@ const baseNodeStyle: React.CSSProperties = {
   boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.3)',
 };
 
-const groupNodeStyle: React.CSSProperties = {
-  padding: '24px',
-  borderRadius: '16px',
-  border: '3px dashed #8b5cf6',
-  background: 'rgba(139, 92, 246, 0.05)',
-  minWidth: '400px',
-};
-
 interface NodeComponentProps {
   id?: string;
   data: CustomNodeData;
