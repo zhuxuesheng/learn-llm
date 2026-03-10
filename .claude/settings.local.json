@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node:*)",
+      "Bash(mkdir:*)",
+      "Bash(npm install:*)",
+      "Bash(npm run:*)",
+      "WebFetch(domain:hf-mirror.com)",
+      "Bash(curl:*)",
+      "Bash(taskkill:*)",
+      "WebSearch",
+      "Bash(git:*)"
+    ]
+  }
+}
