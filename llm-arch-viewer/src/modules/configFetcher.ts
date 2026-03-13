@@ -20,15 +20,24 @@ export async function fetchModelConfig(
   source: 'hf-mirror' | 'huggingface' | 'auto' = 'auto'
 ): Promise<FetchResult> {
   // In auto mode, always use huggingface.co first (it supports CORS)
-  // hf-mirror.com does NOT support CORS
   if (source === 'auto') {
     const result = await fetchFromSource(modelId, 'https://huggingface.co');
     if (result.success) {
       return result;
     }
-    // If huggingface failed, try hf-mirror (might work if CORS is enabled)
-    console.log('huggingface.co failed, trying hf-mirror.com...');
-    return fetchFromSource(modelId, 'https://hf-mirror.com');
+    // If huggingface failed with CORS/network error, suggest using proxy
+    if (result.error?.includes('CORS') || result.error?.includes('Failed to fetch')) {
+      return {
+        success: false,
+        error: `Cannot connect to Hugging Face. This may be due to network restrictions.
+
+Suggestions:
+1. Try using a VPN or proxy
+2. Check if huggingface.co is accessible in your network
+3. Try running the app locally (npm run dev) which uses server-side proxy`
+      };
+    }
+    return result;
   }
 
   // Direct source fetch
@@ -78,6 +87,17 @@ async function fetchFromSource(modelId: string, baseUrl: string): Promise<FetchR
         model_type: config.text_config.model_type || config.model_type,
         tie_word_embeddings: config.tie_word_embeddings,
         vocab_size: config.text_config.vocab_size,
+      };
+    }
+
+    // Handle Qwen3-ASR style where config is nested in thinker_config.text_config
+    if (config.thinker_config?.text_config && config.thinker_config.text_config.hidden_size) {
+      config = {
+        ...config.thinker_config.text_config,
+        architectures: config.architectures,
+        model_type: config.thinker_config.text_config.model_type || config.model_type,
+        tie_word_embeddings: config.thinker_config.tie_word_embeddings,
+        vocab_size: config.thinker_config.text_config.vocab_size,
       };
     }
 
